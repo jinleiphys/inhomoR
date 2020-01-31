@@ -1,5 +1,5 @@
 OBJ= precision.o  constants.o gauss.o interpolation.o mesh.o pot.o channels.o input.o  \
-coul90.o lagrange_mesh_source.o rmat.o inhomoR.o
+coul90.o lagrange_mesh_source.o rmat.o numerov.o inhomoR.o
  
 BASE := $(shell expr $(CURDIR) : "\(.*\)/.*")
 VERDATE := $(shell git log -1 --format=%cd  )

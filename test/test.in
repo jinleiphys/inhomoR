@@ -1,13 +1,13 @@
-&global Ecm=10 hcm=0.05 rmax=60 lmin=0 lmax=0 nr=100 method=1 /
+&global Ecm=12.7391578947368 hcm=0.05 rmax=60 lmin=0 lmax=0 nr=100 method=2 /
 
-&systems massa=2.  za=0  ja=0
-         massb=10. zb=0  jb=0 / 
+&systems massa=1.0086  za=0  ja=0
+         massb=93.0 zb=0  jb=0 / 
          
-&source rho_file=' ' readrho=F /
+&source rho_file='fort.777' readrho=T /
 
 
      
-&POTENTIAL   ptype=1 a1=0 a2=10 rc=1.3
+&POTENTIAL   ptype=1 a1=0 a2=93 rc=1.3
             uv=77.3 av=0.77 rv=1.15 
             uw=6.1  aw=0.47 rw=1.33
             wd=8.4  awd=0.77 rwd=1.37 

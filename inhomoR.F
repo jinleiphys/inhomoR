@@ -1,6 +1,7 @@
       program inhomoR
       use input
       use rmat
+      use numerov
       implicit none
 
       call readin()
@@ -10,6 +11,7 @@
         call Inhomo_Rmatrix_method()
       else
       ! use Numerov method to solve the inhomogeneous equation
+        call Inhomo_numerov_method()
 
       end if
 
