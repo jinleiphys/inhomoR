@@ -3,7 +3,7 @@
 &systems massa=1.0086  za=0  ja=0
          massb=93.0 zb=0  jb=0 / 
          
-&source rho_file='fort.777' readrho=T /
+&source rho_file='fort.777' readrho=F /
 
 
      
