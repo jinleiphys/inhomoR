@@ -16,66 +16,9 @@ module precision
   real(dpreal),parameter :: pi = acos(-1.0_dpreal)           ! pi and imaginary unit 
   complex(dpreal),parameter :: iu = (0.0_dpreal,1.0_dpreal)
 
-   public init_eps,print_eps, print_data
 
  ! this subroutine initializes the machine precision for sp and dp
 
-  contains
 
-   subroutine init_eps
-    implicit none
-
-    real(spreal),external :: slamch
-    real(dpreal),external :: dlamch
- 
-    eps_sp=slamch('E')
-    eps_dp=dlamch('E')
-    
-   
-   end subroutine init_eps
-
-   subroutine print_eps
-    implicit none
-    
-      ! first printout version running
-    WRITE(*,*) 'Precision version: ',VERREV
-    WRITE(*,*) 'Date             : ',VERDATE
-
-    
-    WRITE(*,*) 'Init precision: ',spreal,dpreal
-    WRITE(*,*) 'eps:            ',eps_sp,eps_dp
-
-    WRITE(*,*) 'COMPDATE: ',COMPDATE    
-    WRITE(*,*) 'F90: ',MAKEF90
-    WRITE(*,*) 'F77: ',MAKEF77
-    WRITE(*,*) 'MAKEFOPT1:  ',MAKEFOPT1
-    WRITE(*,*) 'MAKEFOPT2:  ',MAKEFOPT2
-    WRITE(*,*) 'MAKEFOPT3:  ',MAKEFOPT3
-    WRITE(*,*) 'MAKEFOPT4:  ',MAKEFOPT4
-    WRITE(*,*) 'MAKEFOPT5:  ',MAKEFOPT5
-    WRITE(*,*) 'MAKEFOPT6:  ',MAKEFOPT6
-    WRITE(*,*) 'MAKEFOPT7:  ',MAKEFOPT7
-    WRITE(*,*) 'MAKEFOPT8:  ',MAKEFOPT8
-    WRITE(*,*) 'CC:  ',MAKECC
-    WRITE(*,*) 'CC:  ',MAKECOPT
-    WRITE(*,*) 'LIBSTD1:  ',MAKELIBSTD1
-    WRITE(*,*) 'LIBSTD2:  ',MAKELIBSTD2
-    WRITE(*,*) 'LIBSTD3:  ',MAKELIBSTD3
-    WRITE(*,*) 'LIBSTD4:  ',MAKELIBSTD4
-    WRITE(*,*) 'LIBSTD5:  ',MAKELIBSTD5
-    WRITE(*,*) 'LIBSTD6:  ',MAKELIBSTD6
-    WRITE(*,*) 'LIBSTD7:  ',MAKELIBSTD7
-    WRITE(*,*) 'LIBSTD8:  ',MAKELIBSTD8
-    
-   end subroutine print_eps
-
-   !myid rank of  each processes
-   subroutine print_data(myid)
-    implicit none
-    integer:: myid
-
-    print_infor = (myid .eq. 0)
-
-   end subroutine
 
 end module precision

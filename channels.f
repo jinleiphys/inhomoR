@@ -67,7 +67,7 @@ C     write(*,30)
                alpha2b%l(nch)=l
                alpha2b%s(nch)=s
                alpha2b%j(nch)=J
-               write(8,40)nch,l,jp,jt,s,j
+               write(8,40)nch,l,ja,jb,s,j
                nch=nch+1
             end do ! nJ
          end do ! ns
@@ -75,7 +75,7 @@ C     write(*,30)
 
 
 20    format('---The coupling coefficients are')
-30    format(' a2b','|','(',' l ','(',' jp ',' jt ',')',' s ',')',' J ')
+30    format(' a2b','|','(',' l ','(',' ja ',' jb ',')',' s ',')',' J ')
 40    format(I4,1x,I3,2x,f3.1,2x,f3.1,2x,f3.1,2x,f4.1)
 
       end subroutine

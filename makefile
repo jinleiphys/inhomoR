@@ -1,6 +1,6 @@
-OBJ= precision.o  constants.o systems.o channels.o mesh.o bgPN.o ch89.o kd02.o watson.o n9be.o \
- pot.o input.o  coul90.o gauss.o interpolation.o  lagrange_mesh.o scattwf.o scattering.o
-
+OBJ= precision.o  constants.o gauss.o interpolation.o mesh.o pot.o channels.o input.o  \
+coul90.o lagrange_mesh_source.o rmat.o inhomoR.o
+ 
 BASE := $(shell expr $(CURDIR) : "\(.*\)/.*")
 VERDATE := $(shell git log -1 --format=%cd  )
 # VERDATE := $(shell expr "$(VERDATE)" : '\(.*\)(.*).*')
@@ -19,11 +19,11 @@ FFLAGS = -O2 -Wtabs   -ffixed-line-length-0
 
 .SUFFIXES: .F90 .f90 .f95
 
-all: scattering
+all: inhomo
 
 
-scattering:  $(OBJ)
-	$(FC) -o icecream $(FFLAGS) $(OBJ) $(LIB)
+inhomo:  $(OBJ)
+	$(FC) -o inhomoR $(FFLAGS) $(OBJ) $(LIB)
 
 
 
@@ -42,4 +42,4 @@ scattering:  $(OBJ)
 
 
 clean:
-	rm -f upot $(objectsbound) $(objectsscatt) *.mod core *.o icecream
+	rm -f *.mod core *.o inhomoR

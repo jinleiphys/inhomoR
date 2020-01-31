@@ -7,6 +7,8 @@
       real*8 :: za, zb ! charge of interaction partciles
       character*999 :: rho_file
       complex*16,allocatable,dimension(:) :: rho
+      logical :: readrho
+      logical,dimension(9999) :: written
 
       contains
 
@@ -15,8 +17,10 @@
       use precision
       use constants
       use channels
+      use pot 
+      use gauss 
       implicit none
-      logical :: readrho
+ 
 
 
       namelist /global/ Ecm,hcm,rmax,lmin,lmax,nr,method
@@ -89,14 +93,14 @@
       write(*,'(8x, "source term file:",a20)') trim(rho_file)
 
 
-      open(unit=99, file=trim(dens_file),status="old") ! dependent on the format of density  decide later
+      open(unit=99, file=trim(rho_file),status="old") ! dependent on the format of rho  decide later
       rewind(99)
       n_rho=0
 20    read(99,*,end=200) x,y
       n_rho=n_rho+1
       goto 20
 
-200   if(n_rho < 1) write(*,*) "error reading density ! "
+200   if(n_rho < 1) write(*,*) "error reading source term ! "
 
       ! readin the desity file
       rewind(99)
@@ -134,6 +138,9 @@
 
        flkind(31)='local copy of source term'
        written(31)=.TRUE.
+       
+       flkind(32)='solutions of inhomo Eq.'
+       written(32)=.TRUE.
 
 
 

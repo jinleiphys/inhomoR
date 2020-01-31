@@ -26,32 +26,33 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       subroutine potr(z12,ls)
 c     subroutine to calculate the potential
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-       use mesh,only:irmax,hcm
+       use mesh
        use precision
        implicit none
        real*8 :: a13,r !a1^0.333333+a2^0.333333
        complex*16 :: vc,vls,vsur
+       real*8 :: wsv,wsw,vcou,vlsv,vlsw,vsurv,vsurw
        real*8 :: z12  ! For Coulomb potential
        real*8 ::ls   ! l*s
-       real*8, dimension(0:irmax) :: vr,vi
+       real*8, dimension(1:nr) :: vr,vi
        character*40 filename
        integer :: ir
 
 
        if (allocated(v)) deallocate(v)
-       allocate(v(0:irmax))
+       allocate(v(1:nr))
        v=0.0d0
 
 c***********************************
        if (ptype==41) then
          if (allocated(rvec)) deallocate(rvec)
-         allocate(rvec(0:irmax))    !!! 0 or 1  ??
-         do ir=0, irmax
-           rvec(ir)=ir*hcm
+         allocate(rvec(1:nr))    !!! 0 or 1  ??
+         do ir=1, nr
+           rvec(ir)=rr(ir)
          end do
          filename='fort.41'
-         call extpot(filename,vr,vi,irmax)
-         do ir=0,irmax
+         call extpot(filename,vr,vi)
+         do ir=1,nr
            v(ir)=cmplx(uv*vr(ir),uw*vi(ir),kind=8)
          end do
        end if
@@ -68,13 +69,12 @@ c-----------------------------------------------------------------------
 
 c-----------------------------------------------------------------------
 c      calculate the Woods-Saxon potential(volume)
-       do ir=0,irmax
-       r=ir*hcm
+       do ir=1,nr
+       r=rr(ir)
        vc=0.0d0
        vls=0.0d0
        vsur=0.0d0
        vcou=0.0d0
-       wsw1=0.0d0
        select case(ptype)
 c-----------------------------------------------------------------------
        case(1) ! Woods-Saxon
@@ -82,7 +82,7 @@ c-----------------------------------------------------------------------
        wsv=-ws(r,uv,rv*a13,av)
        wsw=-ws(r,uw,rw*a13,aw)
        vc=cmplx(wsv,wsw,kind=8)
-       vlsv=q*wsso(r,vsov,rsov*a13,asov)*2.*ls
+       vlsv=wsso(r,vsov,rsov*a13,asov)*2.*ls
        vlsw=wsso(r,vsow,rsow*a13,asow)*2.*ls
        vls=cmplx(vlsv,vlsw,kind=8)
        vsurv=4*avd*dws(r,vd,rvd*a13,avd)
@@ -96,7 +96,7 @@ c-----------------------------------------------------------------------
        wsv=-gausspot(r,uv,rv*a13,av)
        wsw=-gausspot(r,uw,rw*a13,aw)
        vc=cmplx(wsv,wsw,kind=8)
-       vlsv=q*gausder(r,vsov,rsov*a13,asov)*2.*ls
+       vlsv=gausder(r,vsov,rsov*a13,asov)*2.*ls
        vlsw=gausder(r,vsow,rsow*a13,asow)*2.*ls
        vls=cmplx(vlsv,vlsw,kind=8)
        vcou=vcoul(r,z12,rc*a13)
@@ -119,8 +119,8 @@ C        write(*,*) "ir=",ir*hcm, "v=", v(ir)
        end do
 
 
-       do ir=0,irmax
-          write(30,*) ir*hcm,real(v(ir)),aimag(v(ir))
+       do ir=1,nr
+          write(30,*) rr(ir),real(v(ir)),aimag(v(ir))
        end do
 
       end subroutine potr
@@ -240,12 +240,13 @@ c Format:
 c 1st line: header
 c 2nd line: npoints, rstep, rfirst
 c Next lines: real, imag
-      subroutine extpot(filename,vr,vi,nr)
+      subroutine extpot(filename,vr,vi)
         use interpolation
+        use mesh, only:nr
         implicit none
         logical uu
-        integer npt,n,nr
-        real*8 vr(0:nr),vi(0:nr)
+        integer npt,n
+        real*8 vr(1:nr),vi(1:nr)
         integer,parameter:: kpot=50
         character*40 filename,header
         real*8:: r,rstep,rfirst,x,y1,y2
@@ -287,7 +288,7 @@ c Next lines: real, imag
      &      " Rmax=",1f7.1," fm,"
      &      " Step=",1f7.3," fm]",/)
 
-        do n=0,nr
+        do n=1,nr
           r=rvec(n)
           vr(n)=fival(r,xv,faux,npt,alpha)
           vi(n)=fival(r,xv,haux,npt,alpha)
