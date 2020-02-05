@@ -3,18 +3,18 @@
 
 ## Input description
 ### &global namelist:  Ecm,hcm,rmax,lmin,lmax,nr
--Ecm : Center of mass energy 
--hcm : radial step when using Numerov method.
--rmax: maximum number of the radial distance
--lmin: minimum number of partial wave 
--lmax: maximum number of partial wave
--nr:grid number when using R-matrix method and Green's function method 
+- Ecm : Center of mass energy 
+- hcm : radial step when using Numerov method.
+- rmax: maximum number of the radial distance
+- lmin: minimum number of partial wave 
+- lmax: maximum number of partial wave
+- nr:grid number when using R-matrix method and Green's function method 
 
 
 ### &systems: massa, massb, za,zb,ja,jb
--mass,massb : mass numbers of interaction particles 
--za, zb: charge numbers 
--ja,jb: spins 
+- mass,massb : mass numbers of interaction particles 
+- za, zb: charge numbers 
+- ja,jb: spins 
 
 ### &potential namelist:  ptype, a1, a2, rc, uv, av, rv, uw, aw, rw, vsov, rsov, asov, vsow, rsow, asow, vd, avd, rvd, wd, awd, rwd
 - a1, a2, rc, uv, av, rv, uw, aw, rw, vsov, rsov, asov, vsow, rsow, asow, vd, avd, rvd, wd, awd, rwd : potential parameters
