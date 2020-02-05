@@ -17,10 +17,10 @@
       use precision
       use constants
       use channels
-      use pot 
-      use gauss 
+      use pot
+      use gauss
       implicit none
- 
+
 
 
       namelist /global/ Ecm,hcm,rmax,lmin,lmax,nr,method
@@ -33,16 +33,8 @@
       hcm=0.05;rmax=40;lmin=0;lmax=0;nr=60;method=1
       read(5,nml=global)
       irmax=nint(rmax/hcm)
-      if(method==1) then
-        ! for R-matrix method
-        allocate(rr(1:nr),rrw(1:nr))
-        call gauleg(nr,0.0_dpreal,rmax,rr,rrw)
-      else
-        ! for Numerov method
-        nr=irmax
-        allocate(rr(1:nr), rrw(1:nr))
-        call simpson(nr,rmax,rr,rrw)
-      end if
+
+
 
       massa=1.0; massb=1.0; za=0.0;zb=0.0;ja=0.0;jb=0.0
       read(5,nml=systems)
@@ -138,10 +130,18 @@
 
        flkind(31)='local copy of source term'
        written(31)=.TRUE.
-       
-       flkind(32)='solutions of inhomo Eq.'
-       written(32)=.TRUE.
 
+       flkind(32)='solutions of r-matrix'
+       written(32)=.TRUE.
+       flkind(33)='solutions of Green function'
+       written(33)=.TRUE.
+       flkind(34)='solutions of numerov'
+       written(34)=.TRUE.
+
+       flkind(200)='regular solution of green function'
+       written(200)=.TRUE.
+       flkind(250)='irregular solution of green function'
+       written(250)=.TRUE.
 
 
        nwrit = 0

@@ -19,8 +19,8 @@
       integer :: nch, l
       real*8 :: s,ls,j
       complex*16,dimension(1:nr) :: wf
-      complex*16 :: smat 
-      integer :: ir 
+      complex*16 :: smat
+      integer :: ir
 
 
 
@@ -30,18 +30,18 @@
       ! compute the boundary conditions
       eta=za*zb*e2*mu/hbarc/hbarc/k
       kr=k*rmax
-      call coul90(kr,eta,zero,lmax,nfc,ngc,nfcp,ngcp,0,ifail)   ! call for boundary of  inhomogeneous method  
+      call coul90(kr,eta,zero,lmax,nfc,ngc,nfcp,ngcp,0,ifail)   ! call for boundary of  inhomogeneous method
       kr=hcm*(nr-5)*k
-      call coul90(kr,eta,zero,lmax,nfc1,ngc1,nfcp1,ngcp1,0,ifail) 
-      
-      
-      ! allocate source term 
-      if (.not. allocated(rho)) then 
+      call coul90(kr,eta,zero,lmax,nfc1,ngc1,nfcp1,ngcp1,0,ifail)
+
+
+      ! allocate source term
+        deallocate(rho)
         allocate(rho(1:nr))
-      end if 
+
       if (readrho) call read_rho()
-      
-     
+
+
 
 
 
@@ -51,18 +51,18 @@
         j=alpha2b%j(nch)
         ls=0.5_dpreal*(j*(j+1)-l*(l+1)-s*(s+1))
         call potr(za*zb,ls)
-        if (.not. readrho) rho(:)=v(:)        
+        if (.not. readrho) rho(:)=v(:)
         call numerov_inho(l,wf,smat)
-        
-        write(*,100) l,s,j,real(smat),aimag(smat) 
-        write(33,101)l,s,j
-        
+
+        write(*,100) l,s,j,real(smat),aimag(smat)
+        write(34,101)l,s,j
+
         do ir=1,nr
-           write(33,*) rr(ir), real(wf(ir)),aimag(wf(ir))
-        end do 
-        
-        
-      end do 
+           write(34,*) rr(ir), real(wf(ir)),aimag(wf(ir))
+        end do
+
+
+      end do
 
 100   format('l=',I3,' s=',f3.1, ' j=', f3.1, ' s-mat=(',2f10.6,')')
 101   format('&l=',I3,' s=',f3.1, ' j=', f3.1)
@@ -70,16 +70,16 @@
 
 
       end subroutine
-      
-      
+
+
 ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
        subroutine numerov_inho(l,wf,sl)
 c      this subroutine is used to calculate the R_func in the notes
 ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
         use mesh
         use constants
-        use input 
-        use pot 
+        use input
+        use pot
         implicit none
         complex*16,dimension(1:nr) :: wf
         complex*16 :: smat
@@ -96,9 +96,7 @@ ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
         wf=0.0_dpreal
 
 
-        write(*,*) "nr=",nr
-             
-        
+
 c      Numerov method to solve the differential radial equation
 c      r0 the first point to do the integration
        inhomo=0.0_dpreal
@@ -106,39 +104,39 @@ c      r0 the first point to do the integration
        r0=2*l
        rho=-rho*2.0_dpreal*mu/hbarc/hbarc                        !!!!!!!!
        inhomo(r0)=0.0d0    ! boundary condition
-       inhomo(r0+1)=hcm**(l+1)  ! arbitrary value 
+       inhomo(r0+1)=hcm**(l+1)  ! arbitrary value
        ir=r0+1; r=ir*hcm
        kl(ir)=2.*mu*ecm/hbarc**2-l*(l+1)/r**2-2.*mu*v(ir)/
      &                                                  hbarc**2
        Tx(ir)=-hcm**2/12.0d0*kl(ir)
        Wx(ir)=(1-Tx(ir))*inhomo(ir)
        inhomo(r0+2)=2.*inhomo(r0+1)-hcm**2*kl(r0+1)*
-     &                         inhomo(r0+1)+rho(r0+1)*hcm*ir        !!!!!!approximation  
-       
+     &                         inhomo(r0+1)+rho(r0+1)*hcm*ir        !!!!!!approximation
+
        ir=r0+2; r=ir*hcm
        kl(ir)=2.*mu*ecm/hbarc**2-l*(l+1)/r**2-2.*mu*v(ir)/
      &  hbarc**2
        Tx(ir)=-hcm**2/12.0d0*kl(ir)
        Wx(ir)=(1-Tx(ir))*inhomo(ir)
        const=hcm**2/12.
-       do ir=r0+2 ,nr-1 
+       do ir=r0+2 ,nr-1
         kl(ir+1)=2.*mu*ecm/hbarc**2-l*(l+1.)/((ir+1.)*hcm)**2-
      &                  2.*mu*v(ir+1)/hbarc**2
-        
+
         Tx(ir+1)=-hcm**2/12.0d0*kl(ir+1)
 C       S=12.*Tx(ir)
         Wx(ir+1)=(2+12.*Tx(ir)+12.*Tx(ir)**2)*Wx(ir)-Wx(ir-1)
-     &    +const*(rho(ir+1)+10*rho(ir)+rho(ir-1))    
-        inhomo(ir+1)=Wx(ir+1)/(1.-Tx(ir+1))           
-       end do 
-       
-       
-       
-      
-c************       
+     &    +const*(rho(ir+1)+10*rho(ir)+rho(ir-1))
+        inhomo(ir+1)=Wx(ir+1)/(1.-Tx(ir+1))
+       end do
+
+
+
+
+c************
 c************homogeneous part
       homo(r0)=0.0d0    ! boundary condition
-      homo(r0+1)=hcm**(l+1)  ! arbitrary value 
+      homo(r0+1)=hcm**(l+1)  ! arbitrary value
 c      homo(r0+1)=0.1
       ir=r0+1; r=ir*hcm
       kl(ir)=2.*mu*ecm/hbarc**2-l*(l+1)/r**2-2.*mu*v(ir)
@@ -146,35 +144,35 @@ c      homo(r0+1)=0.1
       Tx(ir)=-hcm**2/12.0d0*kl(ir)
       Wx(ir)=(1-Tx(ir))*homo(ir)
       homo(r0+2)=2.*homo(r0+1)-hcm**2*kl(r0+1)*homo(r0+1)                             !!!!!!approximation
-      
+
       ir=r0+2; r=ir*hcm
 
       kl(ir)=2.*mu*ecm/hbarc**2-l*(l+1)/r**2-2.*mu*v(ir)
      &                        /hbarc**2
       Tx(ir)=-hcm**2/12.0d0*kl(ir)
       Wx(ir)=(1-Tx(ir))*homo(ir)
-      do ir=r0+2 ,nr-1 
+      do ir=r0+2 ,nr-1
         kl(ir+1)=2.*mu*ecm/hbarc**2-l*(l+1.)/((ir+1.)*hcm)**2-
      &                  2.*mu*v(ir+1)/hbarc**2
         Tx(ir+1)=-hcm**2/12.0d0*kl(ir+1)
         Wx(ir+1)=(2+12.*Tx(ir)+12.*Tx(ir)**2)*Wx(ir)-Wx(ir-1)
-        homo(ir+1)=Wx(ir+1)/(1.-Tx(ir+1))           
-       end do   
-       
-       
+        homo(ir+1)=Wx(ir+1)/(1.-Tx(ir+1))
+       end do
+
+
 c*************matching boundary condition**
       hc=cmplx(ngc(l),nfc(l),kind=8)
-      hc1=cmplx(ngc1(l),nfc1(l),kind=8)  
+      hc1=cmplx(ngc1(l),nfc1(l),kind=8)
       sl=-(homo(nr)*inhomo(nr-5)-inhomo(nr)*
      &      homo(nr-5))/(homo(nr)*hc1-homo(nr-5)*hc)
       nl=(inhomo(nr)*hc1-inhomo(nr-5)*hc)/
-     &                     (hc*(homo(nr-5))-hc1*homo(nr)) 
+     &                     (hc*(homo(nr-5))-hc1*homo(nr))
 
 
 
 c--------
        wf=nl*homo(1:nr)+inhomo(1:nr)
-        
+
 
        end subroutine
 c-----------------------------------------------------------------------
