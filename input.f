@@ -2,7 +2,7 @@
       implicit none
       real*8 :: Ecm, mu ! energy in CM frame and reduce mass : unit in MeV
       real*8 ::  k !  momentum
-      integer :: method ! method=1 lagrange mesh method, /=1 numerov method
+C     integer :: method ! method=1 lagrange mesh method, /=1 numerov method
       real*8 :: massa, massb !mass munber of interaction partciles
       real*8 :: za, zb ! charge of interaction partciles
       character*999 :: rho_file
@@ -23,14 +23,14 @@
 
 
 
-      namelist /global/ Ecm,hcm,rmax,lmin,lmax,nr,method
+      namelist /global/ Ecm,hcm,rmax,lmin,lmax,nr
       namelist /systems/ massa, massb, za,zb,ja,jb
       namelist /source/ rho_file, readrho
       namelist /potential/ ptype,a1,a2,rc,uv,av,rv,uw,aw,rw,
      +                     vsov,rsov,asov,vsow,rsow,asow,vd,avd,rvd,wd,awd,rwd
 
 
-      hcm=0.05;rmax=40;lmin=0;lmax=0;nr=60;method=1
+      hcm=0.05;rmax=40;lmin=0;lmax=0;nr=60
       read(5,nml=global)
       irmax=nint(rmax/hcm)
 
