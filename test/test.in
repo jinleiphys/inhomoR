@@ -1,4 +1,4 @@
-&global Ecm=12.7391578947368 hcm=0.05 rmax=60 lmin=0 lmax=0 nr=100 method=2 /
+&global Ecm=12.7391578947368 hcm=0.001 rmax=60 lmin=0 lmax=0 nr=100 method=2 /
 
 &systems massa=1.0086  za=0  ja=0
          massb=93.0 zb=0  jb=0 /

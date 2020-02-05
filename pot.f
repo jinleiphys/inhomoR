@@ -123,6 +123,8 @@ C        write(*,*) "ir=",ir*hcm, "v=", v(ir)
           write(30,*) rr(ir),real(v(ir)),aimag(v(ir))
        end do
 
+       write(30,*) "&"
+
       end subroutine potr
 
 
