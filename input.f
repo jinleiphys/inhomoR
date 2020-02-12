@@ -138,6 +138,13 @@ C     integer :: method ! method=1 lagrange mesh method, /=1 numerov method
        flkind(34)='solutions of numerov'
        written(34)=.TRUE.
 
+       flkind(42)='module solutions of r-matrix'
+       written(42)=.TRUE.
+       flkind(43)='module solutions of Green function'
+       written(43)=.TRUE.
+       flkind(44)='module solutions of numerov'
+       written(44)=.TRUE.
+
        flkind(200)='regular solution of green function'
        written(200)=.TRUE.
        flkind(250)='irregular solution of green function'

@@ -56,9 +56,11 @@
 
         write(*,100) l,s,j,real(smat),aimag(smat)
         write(34,101)l,s,j
+        write(44,101)l,s,j
 
         do ir=1,nr
            write(34,*) rr(ir), real(wf(ir)),aimag(wf(ir))
+           write(44,*) rr(ir), abs(wf(ir))
         end do
 
 

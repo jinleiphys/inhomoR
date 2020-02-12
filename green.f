@@ -44,8 +44,10 @@
         end do
 
         write(33,101)l,s,j
+        write(43,101)l,s,j
         do ir=1,nr
            write(33,*) rr(ir), real(wf(ir)),aimag(wf(ir))
+           write(43,*) rr(ir), abs(wf(ir))
         end do
 
       end do
