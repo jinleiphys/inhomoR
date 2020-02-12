@@ -13,9 +13,9 @@ COMPDATE :=$(shell date)
 # Laptop
  LIB =-L  /opt/local/lib -llapack
 #LIB = -L ../lapack-3.5.0 -lrefblas -llapack
-FC = ifort
-F90 = ifort
-FFLAGS = -O3 -132
+FC = gfortran
+F90 = gfortran
+FFLAGS = -O2 -Wtabs   -ffixed-line-length-0
 
 .SUFFIXES: .F90 .f90 .f95
 

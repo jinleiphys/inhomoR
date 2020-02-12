@@ -106,18 +106,15 @@ c      r0 the first point to do the integration
        inhomo(r0)=0.0d0    ! boundary condition
        inhomo(r0+1)=hcm**(l+1)  ! arbitrary value
        ir=r0+1; r=ir*hcm
-       kl(ir)=2.*mu*ecm/hbarc**2-l*(l+1)/r**2-2.*mu*v(ir)/
-     &                                                  hbarc**2
+       kl(ir)=2.*mu*ecm/hbarc**2-l*(l+1)/r**2-2.*mu*v(ir)/hbarc**2
        Tx(ir)=-hcm**2/12.0d0*kl(ir)
        Wx(ir)=(1-Tx(ir))*inhomo(ir)
-       inhomo(r0+2)=2.*inhomo(r0+1)-hcm**2*kl(r0+1)*
-     &                         inhomo(r0+1)+rho(r0+1)*hcm*ir        !!!!!!approximation
+       kl(ir+1)=2.*mu*ecm/hbarc**2-l*(l+1.)/((ir+1.)*hcm)**2-2.*mu*v(ir+1)/hbarc**2
+       Tx(ir+1)=-hcm**2/12.0d0*kl(ir+1)
+       Wx(ir+1)=(2+12.*Tx(ir)+12.*Tx(ir)**2)*Wx(ir)+hcm**2/11.*(rho(ir+1)+10*rho(ir))
+       inhomo(ir+1)=Wx(ir+1)/(1.-Tx(ir+1))
 
-       ir=r0+2; r=ir*hcm
-       kl(ir)=2.*mu*ecm/hbarc**2-l*(l+1)/r**2-2.*mu*v(ir)/
-     &  hbarc**2
-       Tx(ir)=-hcm**2/12.0d0*kl(ir)
-       Wx(ir)=(1-Tx(ir))*inhomo(ir)
+
        const=hcm**2/12.
        do ir=r0+2 ,nr-1
         kl(ir+1)=2.*mu*ecm/hbarc**2-l*(l+1.)/((ir+1.)*hcm)**2-
