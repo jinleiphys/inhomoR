@@ -1,11 +1,10 @@
-&global Ecm=12.7391578947368 hcm=0.05 rmax=15 lmin=0 lmax=2 nr=200  /
+&global Ecm=12.7391578947368 hcm=0.05 rmax=15 lmin=0 lmax=0 nr=80  /
 
 
 &systems massa=1.0086  za=0  ja=0
          massb=93.0 zb=0  jb=0 /
 
 &source rho_file='fort.777' readrho=F /
-
 
 
 &POTENTIAL   ptype=1 a1=0 a2=93 rc=1.3
