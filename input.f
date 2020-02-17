@@ -39,6 +39,7 @@ C     integer :: method ! method=1 lagrange mesh method, /=1 numerov method
       massa=1.0; massb=1.0; za=0.0;zb=0.0;ja=0.0;jb=0.0
       read(5,nml=systems)
       mu=massa*massb*amu/(massa+massb)
+      write(*,*) "mu=",mu
       k=sqrt(2.0_dpreal*mu*ecm)/hbarc
       call alpha_2b()
 

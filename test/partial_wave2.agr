@@ -83,7 +83,7 @@
 @timestamp rot 0
 @timestamp font 0
 @timestamp char size 1.000000
-@timestamp def "Wed Feb 12 13:54:48 2020"
+@timestamp def "Mon Feb 17 14:48:54 2020"
 @with string
 @    string on
 @    string loctype view
@@ -244,7 +244,7 @@
 @    yaxis  bar color 1
 @    yaxis  bar linestyle 1
 @    yaxis  bar linewidth 1.0
-@    yaxis  label "|u\sl\N|"
+@    yaxis  label "|u\sl\N| (fm\S1/2\N)"
 @    yaxis  label layout para
 @    yaxis  label place auto
 @    yaxis  label char size 1.500000
