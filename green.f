@@ -104,7 +104,7 @@ ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 
 
-
+        
 
         kr=hcm*(irmax-2)*k
         eta=za*zb*e2*mu/hbarc/hbarc/k
@@ -115,6 +115,7 @@ ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
            write(*,*) 'coul90: ifail=',ifail; stop
         endif
 
+        
 
 
        ! change grid points from gauleg to simpson
@@ -123,31 +124,32 @@ ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
        nr=irmax
        allocate(rr(1:nr), rrw(1:nr))
        call simpson(nr,rmax,rr,rrw)
-
+        write(*,*)"alpha2b%nchmax=",alpha2b%nchmax
        do nch=1,alpha2b%nchmax
 
          l=alpha2b%l(nch)
          s=alpha2b%s(nch)
          j=alpha2b%j(nch)
          ls=0.5_dpreal*(j*(j+1)-l*(l+1)-s*(s+1))
-
-
+    
+         write(*,*)"nch=",nch
          call potr(za*zb,ls)
          r0=2*l
        	 call sch(r0,v,l,flx(:,nch))
          call matching(l,k,flx(irmax-4:irmax,nch),sl,nl)
+         
+
        	 flx(:,nch)=flx(:,nch)*nl
 
          call hlxkr(l,v,cph(l),hlx(:,nch))
 
-
-           write(200,*)'& nch=',nch
+     
            do ir=0,irmax
               write (200,*) hcm*ir, real(flx(ir,nch)), aimag(flx(ir,nch))
            end do
        end do
 
-
+               
        ! change grid points from simpson  to gauleg
        deallocate(rr,rrw)
        nr=nrg
@@ -166,7 +168,7 @@ ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 
 
-
+              
 
       end subroutine
 c-----------------------------------------------------------------------
