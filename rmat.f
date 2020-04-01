@@ -40,9 +40,8 @@ C     k=sqrt(2.0_dpreal*mu*ecm)/hbarc
       call coul90(kr,eta,zero,lmax,fc,gc,dfc,dgc,0,ifail)
 
       ! allocate source term
-      if (.not. allocated(rho)) then
+      if (allocated(rho)) deallocate(rho)
         allocate(rho(1:nr))
-      end if
       if (readrho) call read_rho()
 
       hm=hbarc**2/(2.*mu)
@@ -78,9 +77,14 @@ C     k=sqrt(2.0_dpreal*mu*ecm)/hbarc
            write(52,*) rr(ir), real(wf(ir))
         end do
 
-
+C     write(99,*) rmax, abs(smat)
+      
 
       end do
+      
+      
+      deallocate(fc,gc,dfc,dgc)
+     
 
 100   format('l=',I3,' s=',f3.1, ' j=', f3.1, ' s-mat=(',2f10.6,')')
 101   format('&l=',I3,' s=',f3.1, ' j=', f3.1)
