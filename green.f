@@ -21,21 +21,28 @@
       real*8 :: s,j,ls
       integer :: ir, irp
       real*8 :: N
+      integer :: ie
 
 
-
+      ! add loop 
+C     do ie=1, 1000
+C     ecm=ecm+0.001
+C     k=sqrt(2.0_dpreal*mu*ecm)/hbarc
+            
       call greenfunc()
 
       N=2.0_dpreal*mu/hbarc/hbarc/k
       do nch=1, alpha2b%nchmax
-        write(*,*)"nch=",nch
         l=alpha2b%l(nch)
         s=alpha2b%s(nch)
         j=alpha2b%j(nch)
         ls=0.5_dpreal*(j*(j+1)-l*(l+1)-s*(s+1))
         call potr(za*zb,ls)
-        if (.not. readrho) rho(:)=v(:)
-
+        if (.not. readrho) then 
+          do ir=1, nr 
+            rho(ir)=v(ir)*sin(rr(ir))
+          end do 
+        end if 
         wf=0.0_dpreal
         do ir=1, nr
           do irp=1,nr
@@ -45,14 +52,16 @@
 
         write(33,101)l,s,j
         write(43,101)l,s,j
+        write(53,101)l,s,j
         do ir=1,nr
            write(33,*) rr(ir), real(wf(ir)),aimag(wf(ir))
            write(43,*) rr(ir), abs(wf(ir))
+            write(53,*) rr(ir), real(wf(ir))
         end do
 
       end do
 101   format('&l=',I3,' s=',f3.1, ' j=', f3.1)
-
+C     end do 
 
 
       end subroutine
@@ -124,7 +133,6 @@ ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
        nr=irmax
        allocate(rr(1:nr), rrw(1:nr))
        call simpson(nr,rmax,rr,rrw)
-        write(*,*)"alpha2b%nchmax=",alpha2b%nchmax
        do nch=1,alpha2b%nchmax
 
          l=alpha2b%l(nch)
@@ -132,7 +140,6 @@ ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
          j=alpha2b%j(nch)
          ls=0.5_dpreal*(j*(j+1)-l*(l+1)-s*(s+1))
     
-         write(*,*)"nch=",nch
          call potr(za*zb,ls)
          r0=2*l
        	 call sch(r0,v,l,flx(:,nch))

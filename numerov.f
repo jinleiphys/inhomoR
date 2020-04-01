@@ -21,12 +21,18 @@
       complex*16,dimension(1:nr) :: wf
       complex*16 :: smat
       integer :: ir
+      integer :: ie 
 
 
 
       allocate(nfc(0:lmax),ngc(0:lmax),nfcp(0:lmax),ngcp(0:lmax))
       allocate(nfc1(0:lmax),ngc1(0:lmax),nfcp1(0:lmax),ngcp1(0:lmax))
-
+       
+       
+      ! add loop 
+C     do ie=1, 1000
+C     ecm=ecm+0.001
+C     k=sqrt(2.0_dpreal*mu*ecm)/hbarc       
       ! compute the boundary conditions
       eta=za*zb*e2*mu/hbarc/hbarc/k
       kr=k*rmax
@@ -51,20 +57,29 @@
         j=alpha2b%j(nch)
         ls=0.5_dpreal*(j*(j+1)-l*(l+1)-s*(s+1))
         call potr(za*zb,ls)
-        if (.not. readrho) rho(:)=v(:)
+        if (.not. readrho) then 
+          do ir=1, nr 
+            rho(ir)=v(ir)*sin(rr(ir))
+          end do 
+        end if 
         call numerov_inho(l,wf,smat)
 
         write(*,100) l,s,j,real(smat),aimag(smat)
         write(34,101)l,s,j
         write(44,101)l,s,j
+        write(54,101)l,s,j
 
         do ir=1,nr
            write(34,*) rr(ir), real(wf(ir)),aimag(wf(ir))
            write(44,*) rr(ir), abs(wf(ir))
+           write(54,*)  rr(ir), real(wf(ir))
         end do
 
 
       end do
+      
+      
+C     end do  ! add loop 
 
 100   format('l=',I3,' s=',f3.1, ' j=', f3.1, ' s-mat=(',2f10.6,')')
 101   format('&l=',I3,' s=',f3.1, ' j=', f3.1)
