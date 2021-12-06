@@ -99,7 +99,7 @@ c    2 continue
       end do
       cr=cr*hm/rmax ! R-matrix
 
-!      call coufra(ak,eta,l,l,fc,dfc,gc,dgc) ! call the coulomb function;  this can be replaced !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+C      call coufra(ak,eta,l,l,fc,dfc,gc,dgc) ! call the coulomb function;  this can be replaced !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       ci=dcmplx(gc(l),-fc(l))
       cip=dcmplx(dgc(l),-dfc(l))
       co=conjg(ci)
